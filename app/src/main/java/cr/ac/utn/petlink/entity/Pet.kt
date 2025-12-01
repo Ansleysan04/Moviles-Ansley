@@ -10,5 +10,6 @@ data class Pet(
     var age: Int,
     var ownerId: Long,
     var photoUrl: String? = null,
-    var vaccinationRecords: MutableList<String> = mutableListOf()
+    var vaccinationRecords: MutableList<String> = mutableListOf(),
+    var isForAdoption: Boolean = false
 )

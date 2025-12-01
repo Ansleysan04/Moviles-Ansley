@@ -1,3 +1,62 @@
 <resources>
     <string name="app_name">PetLink</string>
+
+    <!-- Main Screen -->
+    <string name="promotions_and_tips">Promotions and Tips</string>
+    <string name="quick_access">Quick Access</string>
+    <string name="adoptions">Adoptions</string>
+    <string name="veterinarians">Veterinarians</string>
+    <string name="lost_pets">Lost Pets</string>
+    <string name="my_profile">My Profile</string>
+    <string name="home">Home</string>
+    <string name="lost">Lost</string>
+    <string name="profile">Profile</string>
+
+    <!-- Login Screen -->
+    <string name="welcome_to_petlink">Welcome to PetLink</string>
+    <string name="login_or_register">Login or register to connect with the world of pets.</string>
+    <string name="email">Email</string>
+    <string name="password">Password</string>
+    <string name="login">Login</string>
+    <string name="register">Register</string>
+    <string name="forgot_password">Forgot your password?</string>
+    <string name="email_hint">your@example.com</string>
+
+    <!-- Register Screen -->
+    <string name="create_account">Create Account</string>
+    <string name="first_name">First Name</string>
+    <string name="last_name">Last Name</string>
+    <string name="phone">Phone</string>
+    <string name="age">Age</string>
+    <string name="address">Address</string>
+    <string name="add_photo">Add Photo</string>
+
+    <!-- Adoptions Screen -->
+    <string name="adopt">Adopt</string>
+    <string name="add_adoption">Add Adoption</string>
+    <string name="pet_name">Pet Name</string>
+    <string name="species">Species</string>
+    <string name="breed">Breed</string>
+    <string name="location">Location</string>
+    <string name="description">Description</string>
+    <string name="save_pet">Save Pet</string>
+
+    <!-- Veterinarians Screen -->
+    <string name="add_veterinarian">Add Veterinarian</string>
+    <string name="veterinarian_name">Veterinarian Name</string>
+    <string name="website">Website</string>
+    <string name="save_veterinarian">Save Veterinarian</string>
+    <string name="see_details">See Details</string>
+
+    <!-- Lost Pets Screen -->
+    <string name="add_lost_pet">Add Lost Pet</string>
+    <string name="last_seen_location">Last seen location</string>
+    <string name="contact_phone">Contact phone</string>
+    <string name="save_lost_pet">Save Lost Pet</string>
+
+    <!-- Profile Screen -->
+    <string name="edit_profile">Edit Profile</string>
+    <string name="my_registered_pets">My Registered Pets</string>
+    <string name="add_my_pet">Add My Pet</string>
+
 </resources>
