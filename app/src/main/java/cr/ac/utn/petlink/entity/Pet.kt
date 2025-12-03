@@ -9,6 +9,8 @@ data class Pet(
     var breed: String,
     var age: Int,
     var ownerId: Long,
+    var location: String, // Added location back
+    var description: String, // Added description back
     var photoUrl: String? = null,
     var vaccinationRecords: MutableList<String> = mutableListOf(),
     var isForAdoption: Boolean = false
