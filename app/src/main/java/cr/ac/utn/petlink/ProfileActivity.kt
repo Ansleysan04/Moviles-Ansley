@@ -1,6 +1,7 @@
 package cr.ac.utn.petlink
 
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
@@ -9,6 +10,7 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.view.ActionMode
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.bumptech.glide.Glide
 import cr.ac.utn.petlink.databinding.ActivityProfileBinding
 import cr.ac.utn.petlink.entity.AppData
 import cr.ac.utn.petlink.entity.Pet
@@ -37,6 +39,10 @@ class ProfileActivity : AppCompatActivity() {
             intent.putExtra("user_id", AppData.currentUser?.id)
             startActivity(intent)
         }
+
+        binding.manageTipsButton.setOnClickListener {
+            startActivity(Intent(this, TipsActivity::class.java))
+        }
     }
 
     override fun onResume() {
@@ -62,6 +68,15 @@ class ProfileActivity : AppCompatActivity() {
             binding.userName.text = "${it.firstName} ${it.lastName}"
             binding.userEmail.text = it.email
             binding.userPhone.text = it.phone
+            it.photoUrl?.let {
+                if (it.isNotEmpty()) {
+                    Glide.with(this)
+                        .load(Uri.parse(it))
+                        .into(binding.userImage)
+                } else {
+                    binding.userImage.setImageResource(R.mipmap.ic_launcher) // Placeholder
+                }
+            }
         }
     }
 

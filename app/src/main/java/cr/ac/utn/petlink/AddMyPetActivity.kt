@@ -1,18 +1,57 @@
 package cr.ac.utn.petlink
 
+import android.Manifest
+import android.content.Intent
+import android.content.pm.PackageManager
+import android.net.Uri
 import android.os.Bundle
+import android.os.Environment
+import android.provider.MediaStore
 import android.view.MenuItem
 import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
+import androidx.core.content.FileProvider
+import com.bumptech.glide.Glide
 import cr.ac.utn.petlink.databinding.ActivityAddMyPetBinding
 import cr.ac.utn.petlink.entity.AppData
 import cr.ac.utn.petlink.entity.Pet
+import java.io.File
+import java.io.IOException
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
 
 class AddMyPetActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityAddMyPetBinding
     private var editingPet: Pet? = null
+    private var imageUri: Uri? = null
+    private lateinit var currentPhotoPath: String
+
+    private val requestPermissionLauncher = registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted: Boolean ->
+        if (isGranted) {
+            openCamera()
+        } else {
+            Toast.makeText(this, "Permiso de cámara denegado", Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    private val takePictureLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+        if (result.resultCode == RESULT_OK) {
+            binding.petImagePreview.setImageURI(imageUri)
+        }
+    }
+
+    private val selectImageFromGalleryLauncher = registerForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
+        uri?.let {
+            contentResolver.takePersistableUriPermission(it, Intent.FLAG_GRANT_READ_URI_PERMISSION)
+            imageUri = it
+            binding.petImagePreview.setImageURI(imageUri)
+        }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -33,6 +72,10 @@ class AddMyPetActivity : AppCompatActivity() {
             supportActionBar?.title = "Añadir Mascota"
         }
 
+        binding.selectImageButton.setOnClickListener {
+            showImageSourceDialog()
+        }
+
         binding.savePetButton.setOnClickListener {
             showSaveConfirmationDialog()
         }
@@ -43,6 +86,81 @@ class AddMyPetActivity : AppCompatActivity() {
         binding.etSpecies.setText(pet.species)
         binding.etBreed.setText(pet.breed)
         binding.etAge.setText(pet.age.toString())
+        pet.photoUrl?.let {
+            if (it.isNotEmpty()) {
+                imageUri = Uri.parse(it)
+                Glide.with(this).load(imageUri).into(binding.petImagePreview)
+            }
+        }
+    }
+
+    private fun showImageSourceDialog() {
+        val options = arrayOf("Cámara", "Galería")
+        AlertDialog.Builder(this)
+            .setTitle("Seleccionar Imagen")
+            .setItems(options) { _, which ->
+                when (which) {
+                    0 -> checkCameraPermission()
+                    1 -> openGallery()
+                }
+            }
+            .show()
+    }
+
+    private fun checkCameraPermission() {
+        when {
+            ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED -> {
+                openCamera()
+            }
+            else -> {
+                requestPermissionLauncher.launch(Manifest.permission.CAMERA)
+            }
+        }
+    }
+
+    private fun openCamera() {
+        Intent(MediaStore.ACTION_IMAGE_CAPTURE).also { takePictureIntent ->
+            // Ensure that there's a camera activity to handle the intent
+            takePictureIntent.resolveActivity(packageManager)?.also {
+                // Create the File where the photo should go
+                val photoFile: File? = try {
+                    createImageFile()
+                } catch (ex: IOException) {
+                    null
+                }
+                // Continue only if the File was successfully created
+                photoFile?.also {
+                    val photoURI: Uri = FileProvider.getUriForFile(
+                        this,
+                        "cr.ac.utn.petlink.provider",
+                        it
+                    )
+                    imageUri = photoURI
+                    takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI)
+                    takePictureLauncher.launch(takePictureIntent)
+                }
+            }
+        }
+    }
+
+
+    @Throws(IOException::class)
+    private fun createImageFile(): File {
+        // Create an image file name
+        val timeStamp: String = SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(Date())
+        val storageDir: File? = getExternalFilesDir(Environment.DIRECTORY_PICTURES)
+        return File.createTempFile(
+            "JPEG_${timeStamp}_", /* prefix */
+            ".jpg", /* suffix */
+            storageDir /* directory */
+        ).apply {
+            // Save a file: path for use with ACTION_VIEW intents
+            currentPhotoPath = absolutePath
+        }
+    }
+
+    private fun openGallery() {
+        selectImageFromGalleryLauncher.launch("image/*")
     }
 
     private fun showSaveConfirmationDialog() {
@@ -66,7 +184,6 @@ class AddMyPetActivity : AppCompatActivity() {
         val age = binding.etAge.text.toString().toIntOrNull() ?: 0
 
         if (editingPet == null) {
-            // Create new pet
             val newPet = Pet(
                 id = System.currentTimeMillis(),
                 name = name,
@@ -74,20 +191,20 @@ class AddMyPetActivity : AppCompatActivity() {
                 breed = breed,
                 age = age,
                 ownerId = AppData.currentUser?.id ?: 0,
-                location = "", // Not specified in this form
-                description = "", // Not specified in this form
-                photoUrl = "",
+                location = "",
+                description = "",
+                photoUrl = imageUri?.toString() ?: "",
                 isForAdoption = false
             )
             AppData.pets.add(newPet)
             Toast.makeText(this, "Mascota guardada.", Toast.LENGTH_SHORT).show()
         } else {
-            // Update existing pet
             editingPet?.apply {
                 this.name = name
                 this.species = species
                 this.breed = breed
                 this.age = age
+                this.photoUrl = imageUri?.toString() ?: this.photoUrl
             }
             Toast.makeText(this, "Cambios guardados.", Toast.LENGTH_SHORT).show()
         }

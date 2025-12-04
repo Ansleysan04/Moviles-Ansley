@@ -1,12 +1,15 @@
 package cr.ac.utn.petlink
 
 import android.graphics.Color
+import android.net.Uri
 import android.util.SparseBooleanArray
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import cr.ac.utn.petlink.entity.Veterinarian
 
 class VeterinarianAdapter(
@@ -62,6 +65,7 @@ class VeterinarianAdapter(
     }
 
     class VeterinarianViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        private val vetImage: ImageView = itemView.findViewById(R.id.vet_image)
         private val vetName: TextView = itemView.findViewById(R.id.vet_name)
         private val vetAddress: TextView = itemView.findViewById(R.id.vet_address)
         private val vetPhone: TextView = itemView.findViewById(R.id.vet_phone)
@@ -73,6 +77,16 @@ class VeterinarianAdapter(
             vetPhone.text = veterinarian.phone
             vetWebsite.text = veterinarian.website
             itemView.setBackgroundColor(if (isSelected) Color.LTGRAY else Color.WHITE)
+
+            veterinarian.imageUrl?.let {
+                if (it.isNotEmpty()) {
+                    Glide.with(itemView.context)
+                        .load(Uri.parse(it))
+                        .into(vetImage)
+                } else {
+                    vetImage.setImageResource(R.mipmap.ic_launcher) // Placeholder
+                }
+            }
         }
     }
 }

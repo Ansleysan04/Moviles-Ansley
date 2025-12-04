@@ -15,19 +15,19 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
 import com.bumptech.glide.Glide
-import cr.ac.utn.petlink.databinding.ActivityAddLostPetBinding
+import cr.ac.utn.petlink.databinding.ActivityAddTipBinding
 import cr.ac.utn.petlink.entity.AppData
-import cr.ac.utn.petlink.entity.LostPet
+import cr.ac.utn.petlink.entity.Tip
 import java.io.File
 import java.io.IOException
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
 
-class AddLostPetActivity : AppCompatActivity() {
+class AddTipActivity : AppCompatActivity() {
 
-    private lateinit var binding: ActivityAddLostPetBinding
-    private var editingPet: LostPet? = null
+    private lateinit var binding: ActivityAddTipBinding
+    private var editingTip: Tip? = null
     private var imageUri: Uri? = null
     private lateinit var currentPhotoPath: String
 
@@ -41,7 +41,7 @@ class AddLostPetActivity : AppCompatActivity() {
 
     private val takePictureLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
         if (result.resultCode == RESULT_OK) {
-            binding.petImage.setImageURI(imageUri)
+            binding.tipImagePreview.setImageURI(imageUri)
         }
     }
 
@@ -49,49 +49,45 @@ class AddLostPetActivity : AppCompatActivity() {
         uri?.let {
             contentResolver.takePersistableUriPermission(it, Intent.FLAG_GRANT_READ_URI_PERMISSION)
             imageUri = it
-            binding.petImage.setImageURI(imageUri)
+            binding.tipImagePreview.setImageURI(imageUri)
         }
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityAddLostPetBinding.inflate(layoutInflater)
+        binding = ActivityAddTipBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
         setSupportActionBar(binding.toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
-        val petId = intent.getLongExtra("pet_id", -1L)
-        if (petId != -1L) {
-            editingPet = AppData.lostPets.find { it.id == petId }
-            editingPet?.let {
-                populatePetDetails(it)
-                supportActionBar?.title = "Editar Mascota Perdida"
+        val tipId = intent.getLongExtra("tip_id", -1L)
+        if (tipId != -1L) {
+            editingTip = AppData.tips.find { it.id == tipId }
+            editingTip?.let {
+                populateTipDetails(it)
+                supportActionBar?.title = "Editar Consejo"
             }
         } else {
-            supportActionBar?.title = "Añadir Mascota Perdida"
+            supportActionBar?.title = "Añadir Consejo"
         }
 
-        binding.addPhotoButton.setOnClickListener {
+        binding.selectImageButton.setOnClickListener {
             showImageSourceDialog()
         }
 
-        binding.saveLostPetButton.setOnClickListener {
+        binding.saveTipButton.setOnClickListener {
             showSaveConfirmationDialog()
         }
     }
 
-    private fun populatePetDetails(pet: LostPet) {
-        binding.etPetName.setText(pet.name)
-        binding.etSpecies.setText(pet.species)
-        binding.etBreed.setText(pet.breed)
-        binding.etLastSeen.setText(pet.lastSeenLocation)
-        binding.etContactPhone.setText(pet.contactPhone)
-        binding.etDescription.setText(pet.description)
-        pet.photoUrl?.let {
+    private fun populateTipDetails(tip: Tip) {
+        binding.etTipTitle.setText(tip.title)
+        binding.etTipDescription.setText(tip.description)
+        tip.photoUrl?.let {
             if (it.isNotEmpty()) {
                 imageUri = Uri.parse(it)
-                Glide.with(this).load(imageUri).into(binding.petImage)
+                Glide.with(this).load(imageUri).into(binding.tipImagePreview)
             }
         }
     }
@@ -160,48 +156,35 @@ class AddLostPetActivity : AppCompatActivity() {
     }
 
     private fun showSaveConfirmationDialog() {
-        val title = if (editingPet == null) "Confirmar Creación" else "Confirmar Edición"
-        val message = if (editingPet == null) "¿Estás seguro de que deseas guardar esta nueva mascota perdida?" else "¿Estás seguro de que deseas guardar los cambios?"
+        val title = if (editingTip == null) "Confirmar Creación" else "Confirmar Edición"
+        val message = if (editingTip == null) "¿Estás seguro de que deseas guardar este nuevo consejo?" else "¿Estás seguro de que deseas guardar los cambios?"
 
         AlertDialog.Builder(this)
             .setTitle(title)
             .setMessage(message)
             .setPositiveButton("Guardar") { _, _ ->
-                saveLostPet()
+                saveTip()
             }
             .setNegativeButton("Cancelar", null)
             .show()
     }
 
-    private fun saveLostPet() {
-        val name = binding.etPetName.text.toString()
-        val species = binding.etSpecies.text.toString()
-        val breed = binding.etBreed.text.toString()
-        val lastSeenLocation = binding.etLastSeen.text.toString()
-        val contactPhone = binding.etContactPhone.text.toString()
-        val description = binding.etDescription.text.toString()
+    private fun saveTip() {
+        val title = binding.etTipTitle.text.toString()
+        val description = binding.etTipDescription.text.toString()
 
-        if (editingPet == null) {
-            val newPet = LostPet(
+        if (editingTip == null) {
+            val newTip = Tip(
                 id = System.currentTimeMillis(),
-                name = name,
-                species = species,
-                breed = breed,
-                lastSeenLocation = lastSeenLocation,
-                lostDate = Date(), // Placeholder
-                contactPhone = contactPhone,
+                title = title,
                 description = description,
                 photoUrl = imageUri?.toString() ?: ""
             )
-            AppData.lostPets.add(newPet)
-            Toast.makeText(this, "Mascota perdida guardada.", Toast.LENGTH_SHORT).show()
+            AppData.tips.add(newTip)
+            Toast.makeText(this, "Consejo guardado.", Toast.LENGTH_SHORT).show()
         } else {
-            editingPet?.apply {
-                this.name = name
-                this.species = species
-                this.breed = breed
-                this.lastSeenLocation = lastSeenLocation
-                this.contactPhone = contactPhone
+            editingTip?.apply {
+                this.title = title
                 this.description = description
                 this.photoUrl = imageUri?.toString() ?: this.photoUrl
             }

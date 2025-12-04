@@ -1,12 +1,15 @@
 package cr.ac.utn.petlink
 
 import android.graphics.Color
+import android.net.Uri
 import android.util.SparseBooleanArray
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import cr.ac.utn.petlink.entity.Pet
 
 class MyPetsAdapter(
@@ -62,6 +65,7 @@ class MyPetsAdapter(
     }
 
     class MyPetViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        private val petImage: ImageView = itemView.findViewById(R.id.pet_image)
         private val petName: TextView = itemView.findViewById(R.id.pet_name)
         private val petBreed: TextView = itemView.findViewById(R.id.pet_breed)
         private val petAge: TextView = itemView.findViewById(R.id.pet_age)
@@ -71,6 +75,16 @@ class MyPetsAdapter(
             petBreed.text = "Raza: ${pet.breed}"
             petAge.text = "Edad: ${pet.age} años"
             itemView.setBackgroundColor(if (isSelected) Color.LTGRAY else Color.WHITE)
+
+            pet.photoUrl?.let {
+                if (it.isNotEmpty()) {
+                    Glide.with(itemView.context)
+                        .load(Uri.parse(it))
+                        .into(petImage)
+                } else {
+                    petImage.setImageResource(R.mipmap.ic_launcher) // Placeholder
+                }
+            }
         }
     }
 }
