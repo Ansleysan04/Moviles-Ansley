@@ -4,7 +4,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="8dp"
+    android:layout_marginStart="16dp"
+    android:layout_marginTop="8dp"
+    android:layout_marginEnd="16dp"
+    android:layout_marginBottom="8dp"
     app:cardCornerRadius="16dp"
     app:cardElevation="4dp">
 
@@ -30,19 +33,22 @@
                 android:id="@+id/pet_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6" />
+                android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6"
+                tools:text="Fido" />
 
             <TextView
                 android:id="@+id/pet_breed"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="4dp" />
+                android:layout_marginTop="4dp"
+                tools:text="Raza: Labrador Retriever" />
 
             <TextView
                 android:id="@+id/pet_age"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="4dp" />
+                android:layout_marginTop="4dp"
+                tools:text="Edad: 2 años" />
 
         </LinearLayout>
 
@@ -50,7 +56,9 @@
             android:id="@+id/details_button"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="16dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="16dp"
             android:text="@string/see_details" />
 
     </LinearLayout>

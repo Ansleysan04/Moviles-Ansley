@@ -1,6 +1,7 @@
 package cr.ac.utn.petlink
 
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
@@ -38,9 +39,23 @@ class LostPetsActivity : AppCompatActivity() {
     }
 
     private fun setupRecyclerView() {
-        adapter = LostPetAdapter(lostPets, { pet -> onItemClick(pet) }, { pet -> onItemLongClick(pet) })
+        adapter = LostPetAdapter(lostPets, 
+            { pet -> onItemClick(pet) }, 
+            { pet -> onItemLongClick(pet) },
+            { pet -> onContactClick(pet) },
+            { pet -> onCallClick(pet) })
         binding.lostPetsRecyclerView.adapter = adapter
         binding.lostPetsRecyclerView.layoutManager = LinearLayoutManager(this)
+    }
+
+    private fun onContactClick(pet: LostPet) {
+        // Handle contact button click (e.g., open a chat screen)
+        Toast.makeText(this, "Contactando a ${pet.contactPhone}", Toast.LENGTH_SHORT).show()
+    }
+
+    private fun onCallClick(pet: LostPet) {
+        val intent = Intent(Intent.ACTION_DIAL, Uri.parse("tel:${pet.contactPhone}"))
+        startActivity(intent)
     }
 
     private fun refreshLostPetList() {

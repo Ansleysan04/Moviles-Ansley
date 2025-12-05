@@ -4,7 +4,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="8dp"
+    android:layout_marginStart="16dp"
+    android:layout_marginTop="8dp"
+    android:layout_marginEnd="16dp"
+    android:layout_marginBottom="8dp"
     app:cardCornerRadius="16dp"
     app:cardElevation="4dp">
 
@@ -16,8 +19,7 @@
         <ImageView
             android:id="@+id/pet_image"
             android:layout_width="match_parent"
-            android:layout_height="180dp"
-            android:background="#E0E0E0"
+            android:layout_height="200dp"
             android:scaleType="centerCrop"
             tools:src="@tools:sample/backgrounds/scenic" />
 
@@ -35,24 +37,14 @@
                 tools:text="Max" />
 
             <TextView
-                android:id="@+id/pet_species"
+                android:id="@+id/pet_age"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 android:drawablePadding="8dp"
-                app:drawableStartCompat="@android:drawable/ic_dialog_info"
-                tools:text="Perro" />
-
-            <TextView
-                android:id="@+id/pet_age"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="4dp"
-                android:drawablePadding="8dp"
-                app:drawableStartCompat="@android:drawable/ic_menu_recent_history"
+                android:gravity="center_vertical"
+                app:drawableStartCompat="@drawable/ic_time"
                 tools:text="2 años" />
-
-
 
             <TextView
                 android:id="@+id/pet_breed"
@@ -60,7 +52,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
                 android:drawablePadding="8dp"
-                app:drawableStartCompat="@android:drawable/ic_menu_compass"
+                android:gravity="center_vertical"
+                app:drawableStartCompat="@drawable/ic_breed"
                 tools:text="Labrador Retriever" />
 
             <TextView
@@ -69,35 +62,22 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
                 android:drawablePadding="8dp"
-                app:drawableStartCompat="@android:drawable/ic_menu_mylocation"
+                android:gravity="center_vertical"
+                app:drawableStartCompat="@drawable/ic_location"
                 tools:text="Madrid, España" />
-
-            <TextView
-                android:id="@+id/pet_vaccinations"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="4dp"
-                android:drawablePadding="8dp"
-                app:drawableStartCompat="@android:drawable/ic_menu_agenda"
-                tools:text="Vacunado" />
-
-            <TextView
-                android:id="@+id/pet_description"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="4dp"
-                android:maxLines="2"
-                android:ellipsize="end"
-                tools:text="Descripción de la mascota..." />
 
         </LinearLayout>
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/adopt_button"
+            style="@style/Widget.MaterialComponents.Button"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="16dp"
-            android:padding="12dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="16dp"
+            android:paddingTop="12dp"
+            android:paddingBottom="12dp"
             android:text="@string/adopt" />
 
     </LinearLayout>

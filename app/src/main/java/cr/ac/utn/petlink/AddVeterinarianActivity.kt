@@ -86,6 +86,8 @@ class AddVeterinarianActivity : AppCompatActivity() {
         binding.etVetAddress.setText(vet.address)
         binding.etVetPhone.setText(vet.phone)
         binding.etVetWebsite.setText(vet.website)
+        binding.editVetRating.rating = vet.rating
+        binding.etVetDistance.setText(vet.distance.toString())
         vet.imageUrl?.let {
             if (it.isNotEmpty()) {
                 imageUri = Uri.parse(it)
@@ -176,6 +178,8 @@ class AddVeterinarianActivity : AppCompatActivity() {
         val address = binding.etVetAddress.text.toString()
         val phone = binding.etVetPhone.text.toString()
         val website = binding.etVetWebsite.text.toString()
+        val rating = binding.editVetRating.rating
+        val distance = binding.etVetDistance.text.toString().toFloatOrNull() ?: 0f
 
         if (editingVet == null) {
             val newVet = Veterinarian(
@@ -184,7 +188,9 @@ class AddVeterinarianActivity : AppCompatActivity() {
                 address = address,
                 phone = phone,
                 website = website,
-                imageUrl = imageUri?.toString() ?: ""
+                imageUrl = imageUri?.toString() ?: "",
+                rating = rating,
+                distance = distance
             )
             AppData.veterinarians.add(newVet)
             Toast.makeText(this, "Veterinario guardado.", Toast.LENGTH_SHORT).show()
@@ -194,6 +200,8 @@ class AddVeterinarianActivity : AppCompatActivity() {
                 this.address = address
                 this.phone = phone
                 this.website = website
+                this.rating = rating
+                this.distance = distance
                 this.imageUrl = imageUri?.toString() ?: this.imageUrl
             }
             Toast.makeText(this, "Cambios guardados.", Toast.LENGTH_SHORT).show()

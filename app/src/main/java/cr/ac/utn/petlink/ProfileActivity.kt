@@ -52,9 +52,18 @@ class ProfileActivity : AppCompatActivity() {
     }
 
     private fun setupRecyclerView() {
-        adapter = MyPetsAdapter(myPets, { pet -> onItemClick(pet) }, { pet -> onItemLongClick(pet) })
+        adapter = MyPetsAdapter(myPets, 
+            { pet -> onItemClick(pet) }, 
+            { pet -> onItemLongClick(pet) },
+            { pet -> openPetDetails(pet) })
         binding.myPetsRecyclerView.adapter = adapter
         binding.myPetsRecyclerView.layoutManager = LinearLayoutManager(this)
+    }
+
+    private fun openPetDetails(pet: Pet) {
+        val intent = Intent(this, PetDetailActivity::class.java)
+        intent.putExtra("pet_id", pet.id)
+        startActivity(intent)
     }
 
     private fun refreshMyPetsList() {

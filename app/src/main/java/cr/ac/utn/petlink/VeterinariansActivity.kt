@@ -39,7 +39,10 @@ class VeterinariansActivity : AppCompatActivity() {
     }
 
     private fun setupRecyclerView() {
-        adapter = VeterinarianAdapter(currentVeterinarians, { vet -> onItemClick(vet) }, { vet -> onItemLongClick(vet) })
+        adapter = VeterinarianAdapter(currentVeterinarians, 
+            { vet -> onItemClick(vet) }, 
+            { vet -> onItemLongClick(vet) },
+            { vet -> showVeterinarianDetails(vet) })
         binding.veterinariansRecyclerView.adapter = adapter
         binding.veterinariansRecyclerView.layoutManager = LinearLayoutManager(this)
     }
@@ -78,6 +81,16 @@ class VeterinariansActivity : AppCompatActivity() {
                 actionMode?.invalidate()
             }
         }
+    }
+
+    private fun showVeterinarianDetails(vet: Veterinarian) {
+        val details = "Nombre: ${vet.name}\n\nDirección: ${vet.address}\n\nTeléfono: ${vet.phone}\n\nSitio Web: ${vet.website}"
+
+        AlertDialog.Builder(this)
+            .setTitle("Detalles del Veterinario")
+            .setMessage(details)
+            .setPositiveButton("Cerrar", null)
+            .show()
     }
 
     private fun setupBottomNavigation() {

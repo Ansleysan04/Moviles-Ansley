@@ -79,7 +79,10 @@
                         android:id="@+id/adoptions_card"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_columnWeight="1">
+                        android:layout_columnWeight="1"
+                        app:cardCornerRadius="16dp"
+                        app:cardElevation="4dp">
+
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="120dp"
@@ -88,7 +91,7 @@
                             <ImageView
                                 android:layout_width="40dp"
                                 android:layout_height="40dp"
-                                android:src="@drawable/ic_favorite" />
+                                android:src="@drawable/ic_adoptions" />
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
@@ -100,7 +103,10 @@
                         android:id="@+id/veterinarians_card"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_columnWeight="1">
+                        android:layout_columnWeight="1"
+                        app:cardCornerRadius="16dp"
+                        app:cardElevation="4dp">
+
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="120dp"
@@ -109,7 +115,7 @@
                             <ImageView
                                 android:layout_width="40dp"
                                 android:layout_height="40dp"
-                                android:src="@drawable/ic_veterinarian" />
+                                android:src="@drawable/ic_quick_vets" />
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
@@ -121,7 +127,10 @@
                         android:id="@+id/lost_pets_card"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_columnWeight="1">
+                        android:layout_columnWeight="1"
+                        app:cardCornerRadius="16dp"
+                        app:cardElevation="4dp">
+
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="120dp"
@@ -130,7 +139,7 @@
                             <ImageView
                                 android:layout_width="40dp"
                                 android:layout_height="40dp"
-                                android:src="@drawable/ic_lost_pet" />
+                                android:src="@drawable/ic_lost_pets" />
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
@@ -142,7 +151,10 @@
                         android:id="@+id/profile_card"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_columnWeight="1">
+                        android:layout_columnWeight="1"
+                        app:cardCornerRadius="16dp"
+                        app:cardElevation="4dp">
+
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="120dp"
@@ -151,7 +163,7 @@
                             <ImageView
                                 android:layout_width="40dp"
                                 android:layout_height="40dp"
-                                android:src="@drawable/ic_profile" />
+                                android:src="@drawable/ic_my_profile" />
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"

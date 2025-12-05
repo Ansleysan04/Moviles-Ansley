@@ -4,7 +4,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="8dp"
+    android:layout_marginStart="16dp"
+    android:layout_marginTop="8dp"
+    android:layout_marginEnd="16dp"
+    android:layout_marginBottom="8dp"
     app:cardCornerRadius="16dp"
     app:cardElevation="4dp">
 
@@ -16,7 +19,7 @@
         <ImageView
             android:id="@+id/pet_image"
             android:layout_width="match_parent"
-            android:layout_height="180dp"
+            android:layout_height="200dp"
             android:scaleType="centerCrop"
             tools:src="@tools:sample/backgrounds/scenic" />
 
@@ -26,35 +29,45 @@
             android:orientation="vertical"
             android:padding="16dp">
 
-            <TextView
-                android:id="@+id/pet_name"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6" />
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/pet_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:layout_centerVertical="true"
+                    android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6"
+                    tools:text="Max" />
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/status_chip"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerVertical="true"
+                    android:text="Perdido"
+                    app:chipBackgroundColor="#FFDCDF" />
+
+            </RelativeLayout>
 
             <TextView
-                android:id="@+id/pet_species"
+                android:id="@+id/pet_description"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
-                android:drawablePadding="8dp"
-                app:drawableStartCompat="@android:drawable/ic_dialog_info" />
-
-            <TextView
-                android:id="@+id/pet_breed"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="4dp"
-                android:drawablePadding="8dp"
-                app:drawableStartCompat="@android:drawable/ic_menu_compass" />
+                tools:text="Max es un labrador muy amigable y juguetón, se perdió cerca del parque. Lleva un collar azul." />
 
             <TextView
                 android:id="@+id/last_seen_location"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="4dp"
+                android:layout_marginTop="8dp"
                 android:drawablePadding="8dp"
-                app:drawableStartCompat="@android:drawable/ic_menu_mylocation" />
+                app:drawableStartCompat="@drawable/ic_location"
+                tools:text="Parque Central, Calle 123" />
 
             <TextView
                 android:id="@+id/lost_date"
@@ -62,24 +75,36 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
                 android:drawablePadding="8dp"
-                app:drawableStartCompat="@android:drawable/ic_menu_my_calendar" />
+                app:drawableStartCompat="@drawable/ic_time"
+                tools:text="Visto por última vez: Hace 2 días" />
 
-            <TextView
-                android:id="@+id/contact_phone"
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="4dp"
-                android:drawablePadding="8dp"
-                app:drawableStartCompat="@android:drawable/ic_menu_call" />
+                android:layout_marginTop="16dp">
 
-            <TextView
-                android:id="@+id/pet_description"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="4dp"
-                android:maxLines="2"
-                android:ellipsize="end"
-                tools:text="Descripción de la mascota..." />
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/contact_button"
+                    style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="8dp"
+                    android:layout_weight="1"
+                    android:maxLines="1"
+                    app:autoSizeTextType="uniform"
+                    android:text="Contactar" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/call_button"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_weight="1"
+                    android:maxLines="1"
+                    app:autoSizeTextType="uniform"
+                    android:text="Llamar" />
+
+            </LinearLayout>
 
         </LinearLayout>
 

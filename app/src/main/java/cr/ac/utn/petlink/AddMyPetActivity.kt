@@ -86,6 +86,10 @@ class AddMyPetActivity : AppCompatActivity() {
         binding.etSpecies.setText(pet.species)
         binding.etBreed.setText(pet.breed)
         binding.etAge.setText(pet.age.toString())
+        binding.etPersonality.setText(pet.personality)
+        binding.etBehavior.setText(pet.behavior)
+        binding.etHealth.setText(pet.health)
+        binding.etNeeds.setText(pet.needs)
         pet.photoUrl?.let {
             if (it.isNotEmpty()) {
                 imageUri = Uri.parse(it)
@@ -182,6 +186,10 @@ class AddMyPetActivity : AppCompatActivity() {
         val species = binding.etSpecies.text.toString()
         val breed = binding.etBreed.text.toString()
         val age = binding.etAge.text.toString().toIntOrNull() ?: 0
+        val personality = binding.etPersonality.text.toString()
+        val behavior = binding.etBehavior.text.toString()
+        val health = binding.etHealth.text.toString()
+        val needs = binding.etNeeds.text.toString()
 
         if (editingPet == null) {
             val newPet = Pet(
@@ -194,7 +202,11 @@ class AddMyPetActivity : AppCompatActivity() {
                 location = "",
                 description = "",
                 photoUrl = imageUri?.toString() ?: "",
-                isForAdoption = false
+                isForAdoption = false,
+                personality = personality,
+                behavior = behavior,
+                health = health,
+                needs = needs
             )
             AppData.pets.add(newPet)
             Toast.makeText(this, "Mascota guardada.", Toast.LENGTH_SHORT).show()
@@ -204,6 +216,10 @@ class AddMyPetActivity : AppCompatActivity() {
                 this.species = species
                 this.breed = breed
                 this.age = age
+                this.personality = personality
+                this.behavior = behavior
+                this.health = health
+                this.needs = needs
                 this.photoUrl = imageUri?.toString() ?: this.photoUrl
             }
             Toast.makeText(this, "Cambios guardados.", Toast.LENGTH_SHORT).show()
