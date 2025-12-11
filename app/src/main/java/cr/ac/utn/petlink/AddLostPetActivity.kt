@@ -1,6 +1,7 @@
 package cr.ac.utn.petlink
 
 import android.Manifest
+import android.app.DatePickerDialog
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
@@ -21,6 +22,7 @@ import cr.ac.utn.petlink.entity.LostPet
 import java.io.File
 import java.io.IOException
 import java.text.SimpleDateFormat
+import java.util.Calendar
 import java.util.Date
 import java.util.Locale
 
@@ -30,6 +32,7 @@ class AddLostPetActivity : AppCompatActivity() {
     private var editingPet: LostPet? = null
     private var imageUri: Uri? = null
     private lateinit var currentPhotoPath: String
+    private var lostDate: Date? = null
 
     private val requestPermissionLauncher = registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted: Boolean ->
         if (isGranted) {
@@ -76,6 +79,10 @@ class AddLostPetActivity : AppCompatActivity() {
             showImageSourceDialog()
         }
 
+        binding.lostDateButton.setOnClickListener {
+            showDatePickerDialog()
+        }
+
         binding.saveLostPetButton.setOnClickListener {
             showSaveConfirmationDialog()
         }
@@ -94,6 +101,26 @@ class AddLostPetActivity : AppCompatActivity() {
                 Glide.with(this).load(imageUri).into(binding.petImage)
             }
         }
+        pet.lostDate.let {
+            lostDate = it
+            val format = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
+            binding.lostDateButton.text = format.format(it)
+        }
+    }
+
+    private fun showDatePickerDialog() {
+        val calendar = Calendar.getInstance()
+        val year = calendar.get(Calendar.YEAR)
+        val month = calendar.get(Calendar.MONTH)
+        val day = calendar.get(Calendar.DAY_OF_MONTH)
+
+        DatePickerDialog(this, { _, selectedYear, selectedMonth, selectedDay ->
+            val selectedDate = Calendar.getInstance()
+            selectedDate.set(selectedYear, selectedMonth, selectedDay)
+            lostDate = selectedDate.time
+            val format = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
+            binding.lostDateButton.text = format.format(lostDate!!)
+        }, year, month, day).show()
     }
 
     private fun showImageSourceDialog() {
@@ -188,7 +215,7 @@ class AddLostPetActivity : AppCompatActivity() {
                 species = species,
                 breed = breed,
                 lastSeenLocation = lastSeenLocation,
-                lostDate = Date(), // Placeholder
+                lostDate = lostDate ?: Date(),
                 contactPhone = contactPhone,
                 description = description,
                 photoUrl = imageUri?.toString() ?: ""
@@ -203,6 +230,7 @@ class AddLostPetActivity : AppCompatActivity() {
                 this.lastSeenLocation = lastSeenLocation
                 this.contactPhone = contactPhone
                 this.description = description
+                this.lostDate = lostDate ?: this.lostDate
                 this.photoUrl = imageUri?.toString() ?: this.photoUrl
             }
             Toast.makeText(this, "Cambios guardados.", Toast.LENGTH_SHORT).show()

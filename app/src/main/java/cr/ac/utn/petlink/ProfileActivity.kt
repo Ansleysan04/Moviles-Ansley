@@ -5,6 +5,7 @@ import android.net.Uri
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
@@ -32,16 +33,21 @@ class ProfileActivity : AppCompatActivity() {
 
         setupBottomNavigation()
         setupRecyclerView()
-        loadUserData()
 
         binding.userInfoCard.setOnClickListener {
-            val intent = Intent(this, RegisterActivity::class.java)
-            intent.putExtra("user_id", AppData.currentUser?.id)
-            startActivity(intent)
+            startActivity(Intent(this, UserDetailActivity::class.java))
         }
 
-        binding.manageTipsButton.setOnClickListener {
+        binding.registerButton.setOnClickListener {
+            startActivity(Intent(this, RegisterActivity::class.java))
+        }
+
+        binding.manageTipsButton.setOnClickListener { // Added this listener
             startActivity(Intent(this, TipsActivity::class.java))
+        }
+
+        binding.fabAddMyPet.setOnClickListener {
+            startActivity(Intent(this, AddMyPetActivity::class.java))
         }
     }
 
@@ -53,8 +59,7 @@ class ProfileActivity : AppCompatActivity() {
 
     private fun setupRecyclerView() {
         adapter = MyPetsAdapter(myPets, 
-            { pet -> onItemClick(pet) }, 
-            { pet -> onItemLongClick(pet) },
+            { pet -> onItemClick(pet) },
             { pet -> openPetDetails(pet) })
         binding.myPetsRecyclerView.adapter = adapter
         binding.myPetsRecyclerView.layoutManager = LinearLayoutManager(this)
@@ -68,39 +73,41 @@ class ProfileActivity : AppCompatActivity() {
 
     private fun refreshMyPetsList() {
         myPets.clear()
-        myPets.addAll(AppData.pets.filter { it.ownerId == AppData.currentUser?.id && !it.isForAdoption })
+        if (AppData.currentUser != null) {
+            myPets.addAll(AppData.pets.filter { it.ownerId == AppData.currentUser?.id && !it.isForAdoption })
+        }
         adapter.notifyDataSetChanged()
     }
 
     private fun loadUserData() {
-        AppData.currentUser?.let {
-            binding.userName.text = "${it.firstName} ${it.lastName}"
-            binding.userEmail.text = it.email
-            binding.userPhone.text = it.phone
-            it.photoUrl?.let {
-                if (it.isNotEmpty()) {
-                    Glide.with(this)
-                        .load(Uri.parse(it))
-                        .into(binding.userImage)
-                } else {
-                    binding.userImage.setImageResource(R.mipmap.ic_launcher) // Placeholder
+        if (AppData.currentUser != null) {
+            binding.userInfoCard.visibility = View.VISIBLE
+            binding.noUserLayout.visibility = View.GONE
+            AppData.currentUser?.let {
+                binding.userName.text = "${it.firstName} ${it.lastName}"
+                binding.userEmail.text = it.email
+                binding.userPhone.text = it.phone
+                it.photoUrl?.let {
+                    if (it.isNotEmpty()) {
+                        Glide.with(this)
+                            .load(Uri.parse(it))
+                            .into(binding.userImage)
+                    } else {
+                        binding.userImage.setImageResource(R.mipmap.ic_launcher) // Placeholder
+                    }
                 }
             }
+        } else {
+            binding.userInfoCard.visibility = View.GONE
+            binding.noUserLayout.visibility = View.VISIBLE
         }
     }
 
     private fun onItemClick(pet: Pet) {
-        if (actionMode != null) {
-            toggleSelection(pet)
-        }
-    }
-
-    private fun onItemLongClick(pet: Pet): Boolean {
         if (actionMode == null) {
             actionMode = startSupportActionMode(ActionModeCallback())
         }
         toggleSelection(pet)
-        return true
     }
 
     private fun toggleSelection(pet: Pet) {
@@ -193,19 +200,10 @@ class ProfileActivity : AppCompatActivity() {
             .show()
     }
 
-    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        menuInflater.inflate(R.menu.profile_menu, menu)
-        return true
-    }
-
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             android.R.id.home -> {
                 finish()
-                true
-            }
-            R.id.action_add_my_pet -> {
-                startActivity(Intent(this, AddMyPetActivity::class.java))
                 true
             }
             else -> super.onOptionsItemSelected(item)

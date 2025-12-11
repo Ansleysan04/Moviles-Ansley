@@ -17,8 +17,8 @@ import cr.ac.utn.petlink.entity.Pet
 class AdoptionAdapter(
     private val pets: MutableList<Pet>,
     private val clickListener: (Pet) -> Unit,
-    private val longClickListener: (Pet) -> Boolean,
-    private val adoptClickListener: (Pet) -> Unit
+    private val adoptClickListener: (Pet) -> Unit,
+    private val detailsClickListener: (Pet) -> Unit
 ) : RecyclerView.Adapter<AdoptionAdapter.PetViewHolder>() {
 
     private val selectedItems = SparseBooleanArray()
@@ -34,11 +34,11 @@ class AdoptionAdapter(
         holder.itemView.setOnClickListener { 
             clickListener(pet)
         }
-        holder.itemView.setOnLongClickListener { 
-            longClickListener(pet)
-        }
         holder.adoptButton.setOnClickListener { 
             adoptClickListener(pet)
+        }
+        holder.detailsButton.setOnClickListener {
+            detailsClickListener(pet)
         }
     }
 
@@ -77,6 +77,7 @@ class AdoptionAdapter(
         private val petBreed: TextView = itemView.findViewById(R.id.pet_breed)
         private val petLocation: TextView = itemView.findViewById(R.id.pet_location)
         val adoptButton: Button = itemView.findViewById(R.id.adopt_button)
+        val detailsButton: Button = itemView.findViewById(R.id.details_button)
 
         fun bind(pet: Pet, isSelected: Boolean) {
             petName.text = pet.name

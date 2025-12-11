@@ -84,7 +84,7 @@
                 android:layout_marginTop="16dp">
 
                 <com.google.android.material.button.MaterialButton
-                    android:id="@+id/contact_button"
+                    android:id="@+id/details_button"
                     style="@style/Widget.MaterialComponents.Button.OutlinedButton"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
@@ -92,7 +92,7 @@
                     android:layout_weight="1"
                     android:maxLines="1"
                     app:autoSizeTextType="uniform"
-                    android:text="Contactar" />
+                    android:text="@string/see_details" />
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/call_button"
@@ -101,8 +101,8 @@
                     android:layout_marginStart="8dp"
                     android:layout_weight="1"
                     android:maxLines="1"
-                    app:autoSizeTextType="uniform"
-                    android:text="Llamar" />
+                    android:text="CALL"
+                    app:autoSizeTextType="uniform" />
 
             </LinearLayout>
 

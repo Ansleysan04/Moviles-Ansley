@@ -24,7 +24,7 @@
         android:id="@+id/contentLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@+id/bottom_navigation"
+        android:layout_above="@id/bottom_navigation"
         android:layout_below="@id/appBarLayout"
         android:orientation="vertical">
 
@@ -78,17 +78,32 @@
 
                 </LinearLayout>
 
-                <ImageView
-                    android:id="@+id/edit_profile_icon"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentEnd="true"
-                    android:layout_alignParentTop="true"
-                    app:srcCompat="@android:drawable/ic_menu_edit" />
-
             </RelativeLayout>
 
         </com.google.android.material.card.MaterialCardView>
+
+        <LinearLayout
+            android:id="@+id/no_user_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:padding="16dp"
+            android:visibility="gone">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Inicia sesión o regístrate para ver tu perfil" />
+
+            <Button
+                android:id="@+id/register_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="Registrarse / Iniciar Sesión" />
+
+        </LinearLayout>
 
         <Button
             android:id="@+id/manage_tips_button"
@@ -114,6 +129,15 @@
             tools:listitem="@layout/item_my_pet" />
 
     </LinearLayout>
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fab_add_my_pet"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@id/bottom_navigation"
+        android:layout_alignParentEnd="true"
+        android:layout_margin="16dp"
+        android:src="@android:drawable/ic_input_add" />
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottom_navigation"

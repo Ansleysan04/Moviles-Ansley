@@ -86,10 +86,12 @@ class AddMyPetActivity : AppCompatActivity() {
         binding.etSpecies.setText(pet.species)
         binding.etBreed.setText(pet.breed)
         binding.etAge.setText(pet.age.toString())
+        binding.etLocation.setText(pet.location)
         binding.etPersonality.setText(pet.personality)
         binding.etBehavior.setText(pet.behavior)
         binding.etHealth.setText(pet.health)
         binding.etNeeds.setText(pet.needs)
+        binding.etDescription.setText(pet.description)
         pet.photoUrl?.let {
             if (it.isNotEmpty()) {
                 imageUri = Uri.parse(it)
@@ -186,10 +188,12 @@ class AddMyPetActivity : AppCompatActivity() {
         val species = binding.etSpecies.text.toString()
         val breed = binding.etBreed.text.toString()
         val age = binding.etAge.text.toString().toIntOrNull() ?: 0
+        val location = binding.etLocation.text.toString()
         val personality = binding.etPersonality.text.toString()
         val behavior = binding.etBehavior.text.toString()
         val health = binding.etHealth.text.toString()
         val needs = binding.etNeeds.text.toString()
+        val description = binding.etDescription.text.toString()
 
         if (editingPet == null) {
             val newPet = Pet(
@@ -199,8 +203,8 @@ class AddMyPetActivity : AppCompatActivity() {
                 breed = breed,
                 age = age,
                 ownerId = AppData.currentUser?.id ?: 0,
-                location = "",
-                description = "",
+                location = location,
+                description = description,
                 photoUrl = imageUri?.toString() ?: "",
                 isForAdoption = false,
                 personality = personality,
@@ -216,6 +220,8 @@ class AddMyPetActivity : AppCompatActivity() {
                 this.species = species
                 this.breed = breed
                 this.age = age
+                this.location = location
+                this.description = description
                 this.personality = personality
                 this.behavior = behavior
                 this.health = health

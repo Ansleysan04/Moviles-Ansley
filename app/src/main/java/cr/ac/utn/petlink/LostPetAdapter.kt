@@ -20,8 +20,7 @@ import java.util.Locale
 class LostPetAdapter(
     private val lostPets: MutableList<LostPet>,
     private val clickListener: (LostPet) -> Unit,
-    private val longClickListener: (LostPet) -> Boolean,
-    private val contactClickListener: (LostPet) -> Unit,
+    private val detailsClickListener: (LostPet) -> Unit,
     private val callClickListener: (LostPet) -> Unit
 ) : RecyclerView.Adapter<LostPetAdapter.LostPetViewHolder>() {
 
@@ -38,11 +37,8 @@ class LostPetAdapter(
         holder.itemView.setOnClickListener { 
             clickListener(lostPet)
         }
-        holder.itemView.setOnLongClickListener { 
-            longClickListener(lostPet)
-        }
-        holder.contactButton.setOnClickListener {
-            contactClickListener(lostPet)
+        holder.detailsButton.setOnClickListener {
+            detailsClickListener(lostPet)
         }
         holder.callButton.setOnClickListener {
             callClickListener(lostPet)
@@ -84,7 +80,7 @@ class LostPetAdapter(
         private val lastSeenLocation: TextView = itemView.findViewById(R.id.last_seen_location)
         private val lostDate: TextView = itemView.findViewById(R.id.lost_date)
         private val statusChip: Chip = itemView.findViewById(R.id.status_chip)
-        val contactButton: Button = itemView.findViewById(R.id.contact_button)
+        val detailsButton: Button = itemView.findViewById(R.id.details_button)
         val callButton: Button = itemView.findViewById(R.id.call_button)
 
         fun bind(lostPet: LostPet, isSelected: Boolean) {

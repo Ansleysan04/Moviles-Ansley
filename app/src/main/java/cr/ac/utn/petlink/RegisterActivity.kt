@@ -1,6 +1,7 @@
 package cr.ac.utn.petlink
 
 import android.Manifest
+import android.app.DatePickerDialog
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
@@ -21,6 +22,7 @@ import cr.ac.utn.petlink.entity.User
 import java.io.File
 import java.io.IOException
 import java.text.SimpleDateFormat
+import java.util.Calendar
 import java.util.Date
 import java.util.Locale
 
@@ -30,6 +32,7 @@ class RegisterActivity : AppCompatActivity() {
     private var editingUser: User? = null
     private var imageUri: Uri? = null
     private lateinit var currentPhotoPath: String
+    private var birthDate: Date? = null
 
     private val requestPermissionLauncher = registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted: Boolean ->
         if (isGranted) {
@@ -77,6 +80,10 @@ class RegisterActivity : AppCompatActivity() {
             showImageSourceDialog()
         }
 
+        binding.birthDateButton.setOnClickListener {
+            showDatePickerDialog()
+        }
+
         binding.registerButton.setOnClickListener {
             showSaveConfirmationDialog()
         }
@@ -85,8 +92,8 @@ class RegisterActivity : AppCompatActivity() {
     private fun populateUserDetails(user: User) {
         binding.etFirstName.setText(user.firstName)
         binding.etLastName.setText(user.lastName)
+        binding.etAddress.setText(user.address)
         binding.etEmail.setText(user.email)
-        binding.etEmail.isEnabled = false // Email cannot be changed
         binding.etPhone.setText(user.phone)
         binding.etPassword.hint = "Nueva contraseña (opcional)"
         user.photoUrl?.let {
@@ -95,6 +102,26 @@ class RegisterActivity : AppCompatActivity() {
                 Glide.with(this).load(imageUri).into(binding.profileImage)
             }
         }
+        user.birthDate?.let {
+            birthDate = it
+            val format = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
+            binding.birthDateButton.text = format.format(it)
+        }
+    }
+
+    private fun showDatePickerDialog() {
+        val calendar = Calendar.getInstance()
+        val year = calendar.get(Calendar.YEAR)
+        val month = calendar.get(Calendar.MONTH)
+        val day = calendar.get(Calendar.DAY_OF_MONTH)
+
+        DatePickerDialog(this, { _, selectedYear, selectedMonth, selectedDay ->
+            val selectedDate = Calendar.getInstance()
+            selectedDate.set(selectedYear, selectedMonth, selectedDay)
+            birthDate = selectedDate.time
+            val format = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
+            binding.birthDateButton.text = format.format(birthDate!!)
+        }, year, month, day).show()
     }
 
     private fun showImageSourceDialog() {
@@ -178,11 +205,12 @@ class RegisterActivity : AppCompatActivity() {
     private fun saveUser() {
         val firstName = binding.etFirstName.text.toString()
         val lastName = binding.etLastName.text.toString()
+        val address = binding.etAddress.text.toString()
+        val email = binding.etEmail.text.toString()
         val phone = binding.etPhone.text.toString()
         val password = binding.etPassword.text.toString()
 
         if (editingUser == null) {
-            val email = binding.etEmail.text.toString()
             val newUser = User(
                 id = System.currentTimeMillis(),
                 firstName = firstName,
@@ -190,7 +218,9 @@ class RegisterActivity : AppCompatActivity() {
                 email = email,
                 phone = phone,
                 password = password,
-                photoUrl = imageUri?.toString() ?: ""
+                photoUrl = imageUri?.toString() ?: "",
+                birthDate = birthDate,
+                address = address
             )
             AppData.users.add(newUser)
             AppData.currentUser = newUser
@@ -199,7 +229,10 @@ class RegisterActivity : AppCompatActivity() {
             editingUser?.apply {
                 this.firstName = firstName
                 this.lastName = lastName
+                this.address = address
+                this.email = email
                 this.phone = phone
+                this.birthDate = birthDate
                 if (password.isNotBlank()) {
                     this.password = password
                 }

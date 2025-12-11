@@ -31,6 +31,10 @@ class VeterinariansActivity : AppCompatActivity() {
 
         setupBottomNavigation()
         setupRecyclerView()
+
+        binding.fabAddVeterinarian.setOnClickListener {
+            startActivity(Intent(this, AddVeterinarianActivity::class.java))
+        }
     }
 
     override fun onResume() {
@@ -170,6 +174,7 @@ class VeterinariansActivity : AppCompatActivity() {
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.veterinarians_menu, menu)
+        menu?.findItem(R.id.action_add_veterinarian)?.isVisible = false
         val searchItem = menu?.findItem(R.id.action_search)
         val searchView = searchItem?.actionView as? SearchView
 
@@ -200,10 +205,6 @@ class VeterinariansActivity : AppCompatActivity() {
         return when (item.itemId) {
             android.R.id.home -> {
                 finish()
-                true
-            }
-            R.id.action_add_veterinarian -> {
-                startActivity(Intent(this, AddVeterinarianActivity::class.java))
                 true
             }
             else -> super.onOptionsItemSelected(item)

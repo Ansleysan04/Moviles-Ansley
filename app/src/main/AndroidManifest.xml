@@ -49,6 +49,9 @@
         <activity
             android:name=".AddLostPetActivity"
             android:parentActivityName=".LostPetsActivity" />
+        <activity
+            android:name=".LostPetDetailActivity"
+            android:parentActivityName=".LostPetsActivity" />
         <activity android:name=".ProfileActivity" />
         <activity
             android:name=".RegisterActivity"
@@ -64,6 +67,9 @@
             android:parentActivityName=".TipsActivity" />
         <activity
             android:name=".PetDetailActivity"
+            android:parentActivityName=".ProfileActivity" />
+        <activity
+            android:name=".UserDetailActivity"
             android:parentActivityName=".ProfileActivity" />
 
     </application>

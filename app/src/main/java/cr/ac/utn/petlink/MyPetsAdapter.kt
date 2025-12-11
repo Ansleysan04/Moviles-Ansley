@@ -17,7 +17,6 @@ import cr.ac.utn.petlink.entity.Pet
 class MyPetsAdapter(
     private val pets: MutableList<Pet>,
     private val clickListener: (Pet) -> Unit,
-    private val longClickListener: (Pet) -> Boolean,
     private val detailsClickListener: (Pet) -> Unit
 ) : RecyclerView.Adapter<MyPetsAdapter.MyPetViewHolder>() {
 
@@ -33,9 +32,6 @@ class MyPetsAdapter(
         holder.bind(pet, selectedItems.get(position, false))
         holder.itemView.setOnClickListener { 
             clickListener(pet)
-        }
-        holder.itemView.setOnLongClickListener { 
-            longClickListener(pet)
         }
         holder.detailsButton.setOnClickListener {
             detailsClickListener(pet)

@@ -88,6 +88,10 @@ class AddAdoptionActivity : AppCompatActivity() {
         binding.etAge.setText(pet.age.toString())
         binding.etLocation.setText(pet.location)
         binding.etDescription.setText(pet.description)
+        binding.etPersonality.setText(pet.personality)
+        binding.etBehavior.setText(pet.behavior)
+        binding.etHealth.setText(pet.health)
+        binding.etNeeds.setText(pet.needs)
         pet.photoUrl?.let {
             if (it.isNotEmpty()) {
                 imageUri = Uri.parse(it)
@@ -178,6 +182,10 @@ class AddAdoptionActivity : AppCompatActivity() {
         val age = binding.etAge.text.toString().toIntOrNull() ?: 0
         val location = binding.etLocation.text.toString()
         val description = binding.etDescription.text.toString()
+        val personality = binding.etPersonality.text.toString()
+        val behavior = binding.etBehavior.text.toString()
+        val health = binding.etHealth.text.toString()
+        val needs = binding.etNeeds.text.toString()
 
         if (petToEdit == null) {
             val newPet = Pet(
@@ -190,7 +198,11 @@ class AddAdoptionActivity : AppCompatActivity() {
                 location = location,
                 description = description,
                 photoUrl = imageUri?.toString() ?: "",
-                isForAdoption = true
+                isForAdoption = true,
+                personality = personality,
+                behavior = behavior,
+                health = health,
+                needs = needs
             )
             AppData.pets.add(newPet)
             Toast.makeText(this, "Mascota en adopción guardada.", Toast.LENGTH_SHORT).show()
@@ -202,6 +214,10 @@ class AddAdoptionActivity : AppCompatActivity() {
                 this.age = age
                 this.location = location
                 this.description = description
+                this.personality = personality
+                this.behavior = behavior
+                this.health = health
+                this.needs = needs
                 this.photoUrl = imageUri?.toString() ?: this.photoUrl
             }
             Toast.makeText(this, "Cambios guardados.", Toast.LENGTH_SHORT).show()
