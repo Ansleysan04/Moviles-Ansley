@@ -13,15 +13,34 @@
         android:theme="@style/Theme.PetLink">
         <activity
             android:name=".MainActivity"
-            android:exported="true"
-            android:label="@string/app_name"
-            android:theme="@style/Theme.PetLink">
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <activity android:name=".AdoptionActivity" />
+        <activity
+            android:name=".AddAdoptionActivity"
+            android:parentActivityName=".AdoptionActivity" />
+        <activity android:name=".VeterinariansActivity" />
+        <activity
+            android:name=".AddVeterinarianActivity"
+            android:parentActivityName=".VeterinariansActivity" />
+        <activity android:name=".LostPetsActivity" />
+        <activity
+            android:name=".AddLostPetActivity"
+            android:parentActivityName=".LostPetsActivity" />
+        <activity android:name=".ProfileActivity" />
+        <activity
+            android:name=".RegisterActivity"
+            android:parentActivityName=".ProfileActivity" />
+        <activity
+            android:name=".AddMyPetActivity"
+            android:parentActivityName=".ProfileActivity" />
+
     </application>
 
 </manifest>

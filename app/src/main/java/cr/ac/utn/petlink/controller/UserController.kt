@@ -4,11 +4,12 @@ import cr.ac.utn.petlink.entity.User
 
 class UserController {
 
-    fun registerUser(name: String, email: String, phone: String, password: String): User {
+    fun registerUser(firstName: String, lastName: String, email: String, phone: String, password: String): User {
         // Here you would typically hash the password before saving
         val newUser = User(
             id = System.currentTimeMillis(), // Using timestamp for unique ID
-            name = name,
+            firstName = firstName,
+            lastName = lastName,
             email = email,
             phone = phone,
             password = password
@@ -27,7 +28,7 @@ class UserController {
         return null // Placeholder
     }
 
-    fun updateUserProfile(userId: Long, name: String, email: String, phone: String): User? {
+    fun updateUserProfile(userId: Long, firstName: String, lastName: String, email: String, phone: String): User? {
         // Retrieve user, update details, and save back to your data manager
         return null // Placeholder
     }
