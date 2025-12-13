@@ -59,4 +59,11 @@
     <string name="my_registered_pets">My Registered Pets</string>
     <string name="add_my_pet">Add My Pet</string>
 
+    <!-- Selection Menu -->
+    <string name="edit">Edit</string>
+    <string name="delete">Delete</string>
+
+    <!-- Search -->
+    <string name="search">Search</string>
+
 </resources>

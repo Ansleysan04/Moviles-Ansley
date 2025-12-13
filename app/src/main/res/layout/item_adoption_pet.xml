@@ -31,17 +31,28 @@
                 android:id="@+id/pet_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Max"
-                android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6" />
+                android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6"
+                tools:text="Max" />
+
+            <TextView
+                android:id="@+id/pet_species"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:drawablePadding="8dp"
+                app:drawableStartCompat="@android:drawable/ic_dialog_info"
+                tools:text="Perro" />
 
             <TextView
                 android:id="@+id/pet_age"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
+                android:layout_marginTop="4dp"
                 android:drawablePadding="8dp"
-                android:text="2 años"
-                app:drawableStartCompat="@android:drawable/ic_menu_recent_history" />
+                app:drawableStartCompat="@android:drawable/ic_menu_recent_history"
+                tools:text="2 años" />
+
+
 
             <TextView
                 android:id="@+id/pet_breed"
@@ -49,8 +60,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
                 android:drawablePadding="8dp"
-                android:text="Labrador Retriever"
-                app:drawableStartCompat="@android:drawable/ic_menu_compass" />
+                app:drawableStartCompat="@android:drawable/ic_menu_compass"
+                tools:text="Labrador Retriever" />
 
             <TextView
                 android:id="@+id/pet_location"
@@ -58,8 +69,26 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
                 android:drawablePadding="8dp"
-                android:text="Madrid, España"
-                app:drawableStartCompat="@android:drawable/ic_menu_mylocation" />
+                app:drawableStartCompat="@android:drawable/ic_menu_mylocation"
+                tools:text="Madrid, España" />
+
+            <TextView
+                android:id="@+id/pet_vaccinations"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:drawablePadding="8dp"
+                app:drawableStartCompat="@android:drawable/ic_menu_agenda"
+                tools:text="Vacunado" />
+
+            <TextView
+                android:id="@+id/pet_description"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:maxLines="2"
+                android:ellipsize="end"
+                tools:text="Descripción de la mascota..." />
 
         </LinearLayout>
 
