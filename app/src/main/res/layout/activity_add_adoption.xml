@@ -35,9 +35,8 @@
                 android:layout_width="150dp"
                 android:layout_height="150dp"
                 android:layout_marginTop="16dp"
-                android:background="#E0E0E0"
                 android:scaleType="centerCrop"
-                app:srcCompat="@android:drawable/ic_menu_camera" />
+                android:src="@android:drawable/ic_menu_gallery" />
 
             <Button
                 android:id="@+id/add_photo_button"
@@ -76,6 +75,19 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
+                android:hint="@string/breed">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/etBreed"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
                 android:hint="@string/age">
 
                 <com.google.android.material.textfield.TextInputEditText
@@ -90,10 +102,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
-                android:hint="@string/breed">
+                android:hint="@string/location">
 
                 <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/etBreed"
+                    android:id="@+id/etLocation"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content" />
 
@@ -103,10 +115,49 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
-                android:hint="@string/location">
+                android:hint="Personalidad">
 
                 <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/etLocation"
+                    android:id="@+id/etPersonality"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:hint="Comportamiento">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/etBehavior"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:hint="Salud">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/etHealth"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:hint="Necesidades">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/etNeeds"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content" />
 

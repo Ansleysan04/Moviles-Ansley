@@ -59,6 +59,9 @@
     <string name="my_registered_pets">My Registered Pets</string>
     <string name="add_my_pet">Add My Pet</string>
 
+    <!-- Tips -->
+    <string name="add_tip">Add Tip</string>
+
     <!-- Selection Menu -->
     <string name="edit">Edit</string>
     <string name="delete">Delete</string>

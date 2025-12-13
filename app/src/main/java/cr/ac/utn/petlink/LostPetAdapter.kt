@@ -1,14 +1,18 @@
 package cr.ac.utn.petlink
 
 import android.graphics.Color
+import android.net.Uri
 import android.util.SparseBooleanArray
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.google.android.material.chip.Chip
+import cr.ac.utn.petlink.R
 import cr.ac.utn.petlink.entity.LostPet
 import java.text.SimpleDateFormat
 import java.util.Locale
@@ -16,7 +20,8 @@ import java.util.Locale
 class LostPetAdapter(
     private val lostPets: MutableList<LostPet>,
     private val clickListener: (LostPet) -> Unit,
-    private val longClickListener: (LostPet) -> Boolean
+    private val detailsClickListener: (LostPet) -> Unit,
+    private val callClickListener: (LostPet) -> Unit
 ) : RecyclerView.Adapter<LostPetAdapter.LostPetViewHolder>() {
 
     private val selectedItems = SparseBooleanArray()
@@ -32,8 +37,11 @@ class LostPetAdapter(
         holder.itemView.setOnClickListener { 
             clickListener(lostPet)
         }
-        holder.itemView.setOnLongClickListener { 
-            longClickListener(lostPet)
+        holder.detailsButton.setOnClickListener {
+            detailsClickListener(lostPet)
+        }
+        holder.callButton.setOnClickListener {
+            callClickListener(lostPet)
         }
     }
 
@@ -68,27 +76,26 @@ class LostPetAdapter(
     class LostPetViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         private val petImage: ImageView = itemView.findViewById(R.id.pet_image)
         private val petName: TextView = itemView.findViewById(R.id.pet_name)
-        private val petSpecies: TextView = itemView.findViewById(R.id.pet_species)
-        private val petBreed: TextView = itemView.findViewById(R.id.pet_breed)
+        private val petDescription: TextView = itemView.findViewById(R.id.pet_description)
         private val lastSeenLocation: TextView = itemView.findViewById(R.id.last_seen_location)
         private val lostDate: TextView = itemView.findViewById(R.id.lost_date)
-        private val contactPhone: TextView = itemView.findViewById(R.id.contact_phone)
-        private val petDescription: TextView = itemView.findViewById(R.id.pet_description)
+        private val statusChip: Chip = itemView.findViewById(R.id.status_chip)
+        val detailsButton: Button = itemView.findViewById(R.id.details_button)
+        val callButton: Button = itemView.findViewById(R.id.call_button)
 
         fun bind(lostPet: LostPet, isSelected: Boolean) {
             petName.text = lostPet.name
-            petSpecies.text = lostPet.species
-            petBreed.text = lostPet.breed
+            petDescription.text = lostPet.description
             lastSeenLocation.text = lostPet.lastSeenLocation
             val format = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
-            lostDate.text = format.format(lostPet.lostDate)
-            contactPhone.text = lostPet.contactPhone
-            petDescription.text = lostPet.description
+            lostDate.text = "Visto por última vez: ${format.format(lostPet.lostDate)}"
 
-            lostPet.photoUrl?.let {
+            if (!lostPet.photoUrl.isNullOrEmpty()) {
                 Glide.with(itemView.context)
-                    .load(it)
+                    .load(Uri.parse(lostPet.photoUrl))
                     .into(petImage)
+            } else {
+                petImage.setImageResource(R.drawable.ic_launcher_background) // Placeholder image
             }
 
             itemView.setBackgroundColor(if (isSelected) Color.LTGRAY else Color.WHITE)

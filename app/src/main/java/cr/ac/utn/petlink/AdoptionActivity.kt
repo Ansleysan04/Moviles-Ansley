@@ -32,6 +32,10 @@ class AdoptionActivity : AppCompatActivity() {
 
         setupBottomNavigation()
         setupRecyclerView()
+
+        binding.fabAddAdoption.setOnClickListener {
+            startActivity(Intent(this, AddAdoptionActivity::class.java))
+        }
     }
 
     override fun onResume() {
@@ -42,10 +46,16 @@ class AdoptionActivity : AppCompatActivity() {
     private fun setupRecyclerView() {
         adapter = AdoptionAdapter(currentAdoptionPets, 
             { pet -> onItemClick(pet) }, 
-            { pet -> onItemLongClick(pet) },
-            { pet -> onAdoptClick(pet) })
+            { pet -> onAdoptClick(pet) },
+            { pet -> openPetDetails(pet) })
         binding.adoptionsRecyclerView.adapter = adapter
         binding.adoptionsRecyclerView.layoutManager = LinearLayoutManager(this)
+    }
+
+    private fun openPetDetails(pet: Pet) {
+        val intent = Intent(this, PetDetailActivity::class.java)
+        intent.putExtra("pet_id", pet.id)
+        startActivity(intent)
     }
 
     private fun onAdoptClick(pet: Pet) {
@@ -71,17 +81,10 @@ class AdoptionActivity : AppCompatActivity() {
     }
 
     private fun onItemClick(pet: Pet) {
-        if (actionMode != null) {
-            toggleSelection(pet)
-        }
-    }
-
-    private fun onItemLongClick(pet: Pet): Boolean {
         if (actionMode == null) {
             actionMode = startSupportActionMode(ActionModeCallback())
         }
         toggleSelection(pet)
-        return true
     }
 
     private fun toggleSelection(pet: Pet) {
@@ -176,6 +179,7 @@ class AdoptionActivity : AppCompatActivity() {
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.adoption_menu, menu)
+        menu?.findItem(R.id.action_add_adoption)?.isVisible = false
         val searchItem = menu?.findItem(R.id.action_search)
         val searchView = searchItem?.actionView as? SearchView
 
@@ -206,10 +210,6 @@ class AdoptionActivity : AppCompatActivity() {
         return when (item.itemId) {
             android.R.id.home -> {
                 finish()
-                true
-            }
-            R.id.action_add_adoption -> {
-                startActivity(Intent(this, AddAdoptionActivity::class.java))
                 true
             }
             else -> super.onOptionsItemSelected(item)

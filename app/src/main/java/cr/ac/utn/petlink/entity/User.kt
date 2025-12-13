@@ -1,5 +1,7 @@
 package cr.ac.utn.petlink.entity
 
+import java.util.Date
+
 data class User(
     var id: Long,
     var firstName: String,
@@ -7,5 +9,7 @@ data class User(
     var email: String,
     var phone: String,
     var password: String, // Added password
-    var photoUrl: String? = null
+    var photoUrl: String? = null,
+    var birthDate: Date? = null,
+    var address: String = ""
 )

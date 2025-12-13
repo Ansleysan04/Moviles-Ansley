@@ -1,6 +1,7 @@
 package cr.ac.utn.petlink
 
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
@@ -30,6 +31,10 @@ class LostPetsActivity : AppCompatActivity() {
 
         setupBottomNavigation()
         setupRecyclerView()
+
+        binding.fabAddLostPet.setOnClickListener {
+            startActivity(Intent(this, AddLostPetActivity::class.java))
+        }
     }
 
     override fun onResume() {
@@ -38,9 +43,23 @@ class LostPetsActivity : AppCompatActivity() {
     }
 
     private fun setupRecyclerView() {
-        adapter = LostPetAdapter(lostPets, { pet -> onItemClick(pet) }, { pet -> onItemLongClick(pet) })
+        adapter = LostPetAdapter(lostPets, 
+            { pet -> onItemClick(pet) }, 
+            { pet -> openPetDetails(pet) },
+            { pet -> onCallClick(pet) })
         binding.lostPetsRecyclerView.adapter = adapter
         binding.lostPetsRecyclerView.layoutManager = LinearLayoutManager(this)
+    }
+
+    private fun openPetDetails(pet: LostPet) {
+        val intent = Intent(this, LostPetDetailActivity::class.java)
+        intent.putExtra("pet_id", pet.id)
+        startActivity(intent)
+    }
+
+    private fun onCallClick(pet: LostPet) {
+        val intent = Intent(Intent.ACTION_DIAL, Uri.parse("tel:${pet.contactPhone}"))
+        startActivity(intent)
     }
 
     private fun refreshLostPetList() {
@@ -50,17 +69,10 @@ class LostPetsActivity : AppCompatActivity() {
     }
 
     private fun onItemClick(pet: LostPet) {
-        if (actionMode != null) {
-            toggleSelection(pet)
-        }
-    }
-
-    private fun onItemLongClick(pet: LostPet): Boolean {
         if (actionMode == null) {
             actionMode = startSupportActionMode(ActionModeCallback())
         }
         toggleSelection(pet)
-        return true
     }
 
     private fun toggleSelection(pet: LostPet) {
@@ -153,9 +165,8 @@ class LostPetsActivity : AppCompatActivity() {
             .show()
     }
 
-
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        menuInflater.inflate(R.menu.lost_pets_menu, menu)
+        // No longer need the add button in the menu
         return true
     }
 
@@ -163,10 +174,6 @@ class LostPetsActivity : AppCompatActivity() {
         return when (item.itemId) {
             android.R.id.home -> {
                 finish()
-                true
-            }
-            R.id.action_add_lost_pet -> {
-                startActivity(Intent(this, AddLostPetActivity::class.java))
                 true
             }
             else -> super.onOptionsItemSelected(item)

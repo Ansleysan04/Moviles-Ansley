@@ -7,5 +7,6 @@ data class Veterinarian(
     var phone: String,
     var website: String? = null,
     var imageUrl: String? = null,
-    var rating: Float = 0f
+    var rating: Float = 0f,
+    var distance: Float = 0f
 )

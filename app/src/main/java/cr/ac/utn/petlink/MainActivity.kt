@@ -1,11 +1,14 @@
 package cr.ac.utn.petlink
 
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
+import com.bumptech.glide.Glide
+import cr.ac.utn.petlink.adapter.TipsAdapter
 import cr.ac.utn.petlink.databinding.ActivityMainBinding
 import cr.ac.utn.petlink.entity.AppData
-import cr.ac.utn.petlink.entity.Promotion
 
 class MainActivity : AppCompatActivity() {
 
@@ -17,25 +20,44 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         loadUserData()
-        setupPromotionsCarousel()
+        setupTipsCarousel()
         setupQuickAccessButtons()
         setupBottomNavigation()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        // Refresh the tips carousel to show any new or edited tips
+        binding.promotionsViewPager.adapter?.notifyDataSetChanged()
+        updateTipsVisibility()
     }
 
     private fun loadUserData() {
         AppData.currentUser?.let {
             binding.userNameText.text = "${it.firstName} ${it.lastName}"
-            // Here you would load the user's profile image into binding.userProfileImage
+            it.photoUrl?.let {
+                if (it.isNotEmpty()) {
+                    Glide.with(this)
+                        .load(Uri.parse(it))
+                        .into(binding.userProfileImage)
+                } else {
+                    binding.userProfileImage.setImageResource(R.mipmap.ic_launcher)
+                }
+            }
         }
     }
 
-    private fun setupPromotionsCarousel() {
-        val promotions = listOf(
-            Promotion("Consejos de Salud Preventiva", "Mantén a tu mascota feliz y sana", ""),
-            Promotion("Descuentos en Alimentos", "Aprovecha nuestras ofertas de temporada", ""),
-            Promotion("Jornada de Vacunación", "Protege a tu mascota de enfermedades", "")
-        )
-        binding.promotionsViewPager.adapter = PromotionsAdapter(promotions)
+    private fun setupTipsCarousel() {
+        binding.promotionsViewPager.adapter = TipsAdapter(AppData.tips)
+        updateTipsVisibility()
+    }
+
+    private fun updateTipsVisibility() {
+        if (AppData.tips.isEmpty()) {
+            binding.promotionsViewPager.visibility = View.GONE
+        } else {
+            binding.promotionsViewPager.visibility = View.VISIBLE
+        }
     }
 
     private fun setupQuickAccessButtons() {

@@ -1,18 +1,25 @@
 package cr.ac.utn.petlink
 
 import android.graphics.Color
+import android.net.Uri
 import android.util.SparseBooleanArray
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
+import android.widget.ImageView
+import android.widget.RatingBar
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
+import cr.ac.utn.petlink.R
 import cr.ac.utn.petlink.entity.Veterinarian
 
 class VeterinarianAdapter(
     private val veterinarians: MutableList<Veterinarian>,
     private val clickListener: (Veterinarian) -> Unit,
-    private val longClickListener: (Veterinarian) -> Boolean
+    private val longClickListener: (Veterinarian) -> Boolean,
+    private val detailsClickListener: (Veterinarian) -> Unit
 ) : RecyclerView.Adapter<VeterinarianAdapter.VeterinarianViewHolder>() {
 
     private val selectedItems = SparseBooleanArray()
@@ -30,6 +37,9 @@ class VeterinarianAdapter(
         }
         holder.itemView.setOnLongClickListener { 
             longClickListener(veterinarian)
+        }
+        holder.detailsButton.setOnClickListener {
+            detailsClickListener(veterinarian)
         }
     }
 
@@ -62,17 +72,27 @@ class VeterinarianAdapter(
     }
 
     class VeterinarianViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        val detailsButton: Button = itemView.findViewById(R.id.details_button)
+        private val vetImage: ImageView = itemView.findViewById(R.id.vet_image)
         private val vetName: TextView = itemView.findViewById(R.id.vet_name)
         private val vetAddress: TextView = itemView.findViewById(R.id.vet_address)
-        private val vetPhone: TextView = itemView.findViewById(R.id.vet_phone)
-        private val vetWebsite: TextView = itemView.findViewById(R.id.vet_website)
+        private val vetRating: RatingBar = itemView.findViewById(R.id.vet_rating)
+        private val vetDistance: TextView = itemView.findViewById(R.id.vet_distance)
 
         fun bind(veterinarian: Veterinarian, isSelected: Boolean) {
             vetName.text = veterinarian.name
             vetAddress.text = veterinarian.address
-            vetPhone.text = veterinarian.phone
-            vetWebsite.text = veterinarian.website
+            vetRating.rating = veterinarian.rating
+            vetDistance.text = veterinarian.distance.toString()
             itemView.setBackgroundColor(if (isSelected) Color.LTGRAY else Color.WHITE)
+
+            if (!veterinarian.imageUrl.isNullOrEmpty()) {
+                Glide.with(itemView.context)
+                    .load(Uri.parse(veterinarian.imageUrl))
+                    .into(vetImage)
+            } else {
+                vetImage.setImageResource(R.drawable.ic_launcher_background) // Placeholder image
+            }
         }
     }
 }

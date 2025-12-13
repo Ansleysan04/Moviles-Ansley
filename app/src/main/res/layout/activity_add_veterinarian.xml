@@ -35,15 +35,14 @@
                 android:layout_width="150dp"
                 android:layout_height="150dp"
                 android:layout_marginTop="16dp"
-                android:background="#E0E0E0"
                 android:scaleType="centerCrop"
-                app:srcCompat="@android:drawable/ic_menu_camera" />
+                android:src="@android:drawable/ic_menu_report_image" />
 
             <Button
                 android:id="@+id/add_photo_button"
-                style="@style/Widget.MaterialComponents.Button.TextButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
                 android:text="@string/add_photo" />
 
             <com.google.android.material.textfield.TextInputLayout
@@ -96,6 +95,33 @@
                     android:id="@+id/etVetWebsite"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="Calificación" />
+
+            <RatingBar
+                android:id="@+id/edit_vet_rating"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:numStars="5"
+                android:stepSize="0.5" />
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:hint="Distancia (km)">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/etVetDistance"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="numberDecimal" />
 
             </com.google.android.material.textfield.TextInputLayout>
 

@@ -1,6 +1,7 @@
 package cr.ac.utn.petlink
 
 import android.graphics.Color
+import android.net.Uri
 import android.util.SparseBooleanArray
 import android.view.LayoutInflater
 import android.view.View
@@ -10,13 +11,14 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import cr.ac.utn.petlink.R
 import cr.ac.utn.petlink.entity.Pet
 
 class AdoptionAdapter(
     private val pets: MutableList<Pet>,
     private val clickListener: (Pet) -> Unit,
-    private val longClickListener: (Pet) -> Boolean,
-    private val adoptClickListener: (Pet) -> Unit
+    private val adoptClickListener: (Pet) -> Unit,
+    private val detailsClickListener: (Pet) -> Unit
 ) : RecyclerView.Adapter<AdoptionAdapter.PetViewHolder>() {
 
     private val selectedItems = SparseBooleanArray()
@@ -32,11 +34,11 @@ class AdoptionAdapter(
         holder.itemView.setOnClickListener { 
             clickListener(pet)
         }
-        holder.itemView.setOnLongClickListener { 
-            longClickListener(pet)
-        }
         holder.adoptButton.setOnClickListener { 
             adoptClickListener(pet)
+        }
+        holder.detailsButton.setOnClickListener {
+            detailsClickListener(pet)
         }
     }
 
@@ -71,27 +73,24 @@ class AdoptionAdapter(
     class PetViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         private val petImage: ImageView = itemView.findViewById(R.id.pet_image)
         private val petName: TextView = itemView.findViewById(R.id.pet_name)
-        private val petSpecies: TextView = itemView.findViewById(R.id.pet_species)
         private val petAge: TextView = itemView.findViewById(R.id.pet_age)
         private val petBreed: TextView = itemView.findViewById(R.id.pet_breed)
         private val petLocation: TextView = itemView.findViewById(R.id.pet_location)
-        private val petVaccinations: TextView = itemView.findViewById(R.id.pet_vaccinations)
-        private val petDescription: TextView = itemView.findViewById(R.id.pet_description)
         val adoptButton: Button = itemView.findViewById(R.id.adopt_button)
+        val detailsButton: Button = itemView.findViewById(R.id.details_button)
 
         fun bind(pet: Pet, isSelected: Boolean) {
             petName.text = pet.name
-            petSpecies.text = pet.species
             petAge.text = "${pet.age} años"
             petBreed.text = pet.breed
             petLocation.text = pet.location
-            petVaccinations.text = if (pet.vaccinationRecords.isNotEmpty()) "Sí" else "No"
-            petDescription.text = pet.description
             
-            pet.photoUrl?.let {
+            if (!pet.photoUrl.isNullOrEmpty()) {
                 Glide.with(itemView.context)
-                    .load(it)
+                    .load(Uri.parse(pet.photoUrl))
                     .into(petImage)
+            } else {
+                petImage.setImageResource(R.drawable.ic_launcher_background) // Placeholder image
             }
 
             itemView.setBackgroundColor(if (isSelected) Color.LTGRAY else Color.WHITE)

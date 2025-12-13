@@ -1,18 +1,23 @@
 package cr.ac.utn.petlink
 
 import android.graphics.Color
+import android.net.Uri
 import android.util.SparseBooleanArray
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
+import cr.ac.utn.petlink.R
 import cr.ac.utn.petlink.entity.Pet
 
 class MyPetsAdapter(
     private val pets: MutableList<Pet>,
     private val clickListener: (Pet) -> Unit,
-    private val longClickListener: (Pet) -> Boolean
+    private val detailsClickListener: (Pet) -> Unit
 ) : RecyclerView.Adapter<MyPetsAdapter.MyPetViewHolder>() {
 
     private val selectedItems = SparseBooleanArray()
@@ -28,8 +33,8 @@ class MyPetsAdapter(
         holder.itemView.setOnClickListener { 
             clickListener(pet)
         }
-        holder.itemView.setOnLongClickListener { 
-            longClickListener(pet)
+        holder.detailsButton.setOnClickListener {
+            detailsClickListener(pet)
         }
     }
 
@@ -62,6 +67,8 @@ class MyPetsAdapter(
     }
 
     class MyPetViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        val detailsButton: Button = itemView.findViewById(R.id.details_button)
+        private val petImage: ImageView = itemView.findViewById(R.id.pet_image)
         private val petName: TextView = itemView.findViewById(R.id.pet_name)
         private val petBreed: TextView = itemView.findViewById(R.id.pet_breed)
         private val petAge: TextView = itemView.findViewById(R.id.pet_age)
@@ -71,6 +78,16 @@ class MyPetsAdapter(
             petBreed.text = "Raza: ${pet.breed}"
             petAge.text = "Edad: ${pet.age} años"
             itemView.setBackgroundColor(if (isSelected) Color.LTGRAY else Color.WHITE)
+
+            pet.photoUrl?.let {
+                if (it.isNotEmpty()) {
+                    Glide.with(itemView.context)
+                        .load(Uri.parse(it))
+                        .into(petImage)
+                } else {
+                    petImage.setImageResource(R.mipmap.ic_launcher) // Placeholder
+                }
+            }
         }
     }
 }
